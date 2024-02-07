@@ -1,0 +1,48 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 7.5vmin;
+}
+
+.container{
+    --cellsize:20vmin;
+    --cellgap:2vmin;
+    --padding:2vmin;
+    display: grid;
+    grid-template-columns: repeat(4,20vmin);
+    grid-template-rows: repeat(4,20vmin);
+    border: solid red 2px;
+    gap:2vmin;
+    padding: 2vmin;
+    position: relative;
+}
+.cell{
+    --bgcolor:gray;
+    --borderadius:1vmin;
+    background-color: gray;
+    border-radius: 1vmin;
+}
+
+.tile{
+    --x:0;
+    --y:2;
+    border-radius: 1vmin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: var(--cellsize);
+    height: var(--cellsize);
+    background-color: rgb(141, 100, 100);
+    top: calc(var(--x) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
+    left: calc(var(--y) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
+    
+}
