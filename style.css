@@ -32,6 +32,7 @@ body{
 }
 
 .tile{
+    /* background-color: red; */
     --x:0;
     --y:2;
     border-radius: 1vmin;
@@ -42,7 +43,7 @@ body{
     width: var(--cellsize);
     height: var(--cellsize);
     background-color: rgb(141, 100, 100);
-    top: calc(var(--x) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
-    left: calc(var(--y) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
-    
+    top: calc(var(--y) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
+    left: calc(var(--x) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
+    transition: 100ms ease-in-out;
 }
