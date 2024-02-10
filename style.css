@@ -43,7 +43,7 @@ body{
     width: var(--cellsize);
     height: var(--cellsize);
     background-color: rgb(141, 100, 100);
-    top: calc(var(--y) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
-    left: calc(var(--x) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
+    top: calc(var(--x) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
+    left: calc(var(--y) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
     transition: 100ms ease-in-out;
 }
