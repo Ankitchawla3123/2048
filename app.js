@@ -665,7 +665,7 @@ let touchStartX = 0;
 let touchStartY = 0;
 let touchEndX = 0;
 let touchEndY = 0;
-let touchThreshold = 10; // Adjust this threshold as needed
+let touchThreshold = 30; // Adjust this threshold as needed
 
 // Get the container element
 let containerElement = document.querySelector('.container');
