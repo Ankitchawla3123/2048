@@ -118,3 +118,9 @@
         }
 
     }
+
+    body, html {
+        overscroll-behavior: none; /* Standard syntax */
+        overscroll-behavior-y: none; /* For Firefox */
+    }
+    

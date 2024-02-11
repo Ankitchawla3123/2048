@@ -723,3 +723,4 @@ function handleSwipe(direction) {
 }
 
 
+document.event.preventDefault();
