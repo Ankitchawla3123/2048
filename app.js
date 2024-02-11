@@ -677,7 +677,7 @@ containerElement.addEventListener('touchstart', function (event) {
 });
 
 containerElement.addEventListener('touchmove', function (event) {
-    // event.preventDefault(); // Prevent scrolling while swiping
+    event.preventDefault(); // Prevent scrolling while swiping
     touchEndX = event.touches[0].clientX;
     touchEndY = event.touches[0].clientY;
 });
