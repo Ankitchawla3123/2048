@@ -729,7 +729,7 @@ let touchStartY = 0;
 let touchEndX = 0;
 let touchEndY = 0;
 let touchThreshold = 10; // Adjust this threshold as needed
-let tapDurationThreshold = 350; // in milliseconds
+let tapDurationThreshold = 250; // in milliseconds
 
 // Get the container element
 let containerElement = document.querySelector('.container');
@@ -742,7 +742,6 @@ containerElement.addEventListener('touchstart', function (event) {
 });
 
 containerElement.addEventListener('touchmove', function (event) {
-    event.preventDefault(); // Prevent scrolling while swiping
     touchEndX = event.touches[0].clientX;
     touchEndY = event.touches[0].clientY;
 });
@@ -764,6 +763,7 @@ containerElement.addEventListener('touchend', function (event) {
         console.log("Tap detected");
     } else if (distance > touchThreshold) {
         // Swipe
+        event.preventDefault(); // Prevent scrolling while swiping
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
             // Horizontal swipe
             if (deltaX > 0) {
