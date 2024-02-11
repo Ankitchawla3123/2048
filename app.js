@@ -661,11 +661,75 @@ function generaterandomstarts(arr) {
 
 
 // Define variables to keep track of touch start and end positions
+// let touchStartX = 0;
+// let touchStartY = 0;
+// let touchEndX = 0;
+// let touchEndY = 0;
+// let touchThreshold = 10; // Adjust this threshold as needed
+
+// // Get the container element
+// let containerElement = document.querySelector('.container');
+
+// // Add touch event listeners to the container element
+// containerElement.addEventListener('touchstart', function (event) {
+//     touchStartX = event.touches[0].clientX;
+//     touchStartY = event.touches[0].clientY;
+// });
+
+// containerElement.addEventListener('touchmove', function (event) {
+//     event.preventDefault(); // Prevent scrolling while swiping
+//     touchEndX = event.touches[0].clientX;
+//     touchEndY = event.touches[0].clientY;
+// });
+
+// containerElement.addEventListener('touchend', function (event) {
+//     let deltaX = touchEndX - touchStartX;
+//     let deltaY = touchEndY - touchStartY;
+
+//     // Calculate the absolute distance traveled
+//     let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+//     // Determine if the interaction is a swipe or a tap
+//     if (distance > touchThreshold) {
+//         // Swipe
+//         if (Math.abs(deltaX) > Math.abs(deltaY)) {
+//             // Horizontal swipe
+//             if (deltaX > 0) {
+//                 // Swipe right
+//                 handleSwipe('ArrowRight');
+//             } else {
+//                 // Swipe left
+//                 handleSwipe('ArrowLeft');
+//             }
+//         } else {
+//             // Vertical swipe
+//             if (deltaY > 0) {
+//                 // Swipe down
+//                 handleSwipe('ArrowDown');
+//             } else {
+//                 // Swipe up
+//                 handleSwipe('ArrowUp');
+//             }
+//         }
+//     } else {
+//         // Tap (Do nothing or handle tap behavior)
+//     }
+// });
+
+// // Function to handle swipe events
+// function handleSwipe(direction) {
+//     let event = new KeyboardEvent('keydown', { 'key': direction });
+//     document.dispatchEvent(event);
+// }
+
+
+
 let touchStartX = 0;
 let touchStartY = 0;
 let touchEndX = 0;
 let touchEndY = 0;
 let touchThreshold = 10; // Adjust this threshold as needed
+let tapDurationThreshold = 250; // in milliseconds
 
 // Get the container element
 let containerElement = document.querySelector('.container');
@@ -674,6 +738,7 @@ let containerElement = document.querySelector('.container');
 containerElement.addEventListener('touchstart', function (event) {
     touchStartX = event.touches[0].clientX;
     touchStartY = event.touches[0].clientY;
+    event.touches[0].startTime = new Date().getTime(); // Store start time of touch
 });
 
 containerElement.addEventListener('touchmove', function (event) {
@@ -689,8 +754,15 @@ containerElement.addEventListener('touchend', function (event) {
     // Calculate the absolute distance traveled
     let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-    // Determine if the interaction is a swipe or a tap
-    if (distance > touchThreshold) {
+    // Calculate the touch duration
+    let touchDuration = new Date().getTime() - event.changedTouches[0].startTime;
+
+    // Determine if the interaction is a swipe or a tap based on distance and duration
+    if (distance > touchThreshold && touchDuration < tapDurationThreshold) {
+        // Tap
+        // Handle tap behavior here
+        console.log("Tap detected");
+    } else if (distance > touchThreshold) {
         // Swipe
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
             // Horizontal swipe
@@ -713,6 +785,7 @@ containerElement.addEventListener('touchend', function (event) {
         }
     } else {
         // Tap (Do nothing or handle tap behavior)
+        console.log("No swipe or tap detected");
     }
 });
 
@@ -721,33 +794,3 @@ function handleSwipe(direction) {
     let event = new KeyboardEvent('keydown', { 'key': direction });
     document.dispatchEvent(event);
 }
-
-// Add touch event listeners to the document object
-document.addEventListener('touchstart', function (event) {
-    if (!isInsideContainer(event)) {
-        event.preventDefault();
-    }
-});
-
-document.addEventListener('touchmove', function (event) {
-    if (!isInsideContainer(event)) {
-        event.preventDefault();
-    }
-});
-
-document.addEventListener('touchend', function (event) {
-    if (!isInsideContainer(event)) {
-        event.preventDefault();
-    }
-});
-
-// Function to check if the touch event occurred inside the container
-function isInsideContainer(event) {
-    // Get the container element
-    let containerElement = document.querySelector('.container');
-
-    // Check if the touch event target is inside the container
-    return containerElement.contains(event.target);
-}
-
-
