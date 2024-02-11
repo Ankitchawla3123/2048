@@ -722,5 +722,32 @@ function handleSwipe(direction) {
     document.dispatchEvent(event);
 }
 
+// Add touch event listeners to the document object
+document.addEventListener('touchstart', function (event) {
+    if (!isInsideContainer(event)) {
+        event.preventDefault();
+    }
+});
 
-document.event.preventDefault();
+document.addEventListener('touchmove', function (event) {
+    if (!isInsideContainer(event)) {
+        event.preventDefault();
+    }
+});
+
+document.addEventListener('touchend', function (event) {
+    if (!isInsideContainer(event)) {
+        event.preventDefault();
+    }
+});
+
+// Function to check if the touch event occurred inside the container
+function isInsideContainer(event) {
+    // Get the container element
+    let containerElement = document.querySelector('.container');
+
+    // Check if the touch event target is inside the container
+    return containerElement.contains(event.target);
+}
+
+
