@@ -6,42 +6,92 @@
 // div2.classList.add("tile");
 // div1.style.setProperty("--y",0);
 let gridfr = document.querySelector(".container");
-let boardfr = [[2, 2, 2, 2],
-[2, 32, 0, 0],
-[2,4, 4, 0],
-[2, 1024, 2048, 2]];
+let boardfr = [[0, 0, 0, 0],
+[0, 0, 0, 0],
+[0, 0, 0, 0],
+[0, 0, 0, 0]];
 
+window.onload = function () {
+    startboard(boardfr);
+};
 
+// testing 
+// for (let i = 0; i < boardfr.length; i++) {
+//     for (let j = 0; j < boardfr[i].length; j++) {
+//         if (boardfr[i][j] != 0) {
+//             let div = document.createElement("div");
+//             gridfr.appendChild(div);
+//             div.classList.add('tile')
+//             div.classList.add(`${i}${j}`)
+//             div.style.setProperty("--x", i);
+//             div.style.setProperty("--y", j);
+//             div.innerHTML = boardfr[i][j];
+//         }
 
-//testing 
-for (let i = 0; i < boardfr.length; i++) {
-    for (let j = 0; j < boardfr[i].length; j++) {
-        if (boardfr[i][j] != 0) {
-            let div = document.createElement("div");
-            gridfr.appendChild(div);
-            div.classList.add('tile')
-            div.classList.add(`${i}${j}`)
-            div.style.setProperty("--x", i);
-            div.style.setProperty("--y", j);
-            div.innerHTML = boardfr[i][j];
+//     }
+
+// }
+
+// document.
+
+let resetButton = document.querySelector('.Restart');
+resetButton.addEventListener('click', (e)=>{
+    resetBoard();
+    let box = document.querySelector('.box');
+    box.classList.remove('active');
+    let overlay = document.querySelector('.overlay');
+    overlay.classList.remove('overlay1')
+
+});
+
+function resetBoard() {
+    for (let i = 0; i < boardfr.length; i++) {
+        for (let j = 0; j < boardfr[i].length; j++) {
+            boardfr[i][j] = 0;
         }
-
     }
-
+    let tiles = document.querySelectorAll('.tile');
+    tiles.forEach(tile => {
+        tile.remove();
+    });
+    startboard(boardfr);   
 }
+
+
+
 changebackgroundcolor();
 
-let event = document.addEventListener('keydown', events)
+let event = document.addEventListener('keydown', function (event) {
+    let deupli = events(event);
+    // deleteduplicates(); 
+    let lc = onleft(boardfr);
+    let rc = onright(boardfr);
+    let tc = ontop(boardfr);
+    let bc = onbottom(boardfr);
+    if (areArraysEqual(lc, boardfr) && areArraysEqual(rc, boardfr) && areArraysEqual(tc, boardfr) && areArraysEqual(bc, boardfr)) {
+        gameover();
+    }
+    // deleteduplicates(deupli);
+})
 
-function createrandom(){
+
+function gameover() {
+    let box = document.querySelector('.box');
+    box.classList.add('active');
+    let overlay = document.querySelector('.overlay');
+    overlay.classList.add('overlay1')
+
+}
+
+function createrandom() {
     let zeros = zerosindexs(boardfr);
     // console.log(zeros)
-    if (zeros.length!=0) {
+    if (zeros.length != 0) {
         let index = Math.floor(Math.random() * zeros.length);
-        let arr2=zeros[index];
+        let arr2 = zeros[index];
         let div = document.createElement("div");
         gridfr.appendChild(div);
-        div.classList.add('tile')   
+        div.classList.add('tile')
         div.classList.add(`${arr2[0]}${arr2[1]}`)
         div.style.setProperty("--x", arr2[0]);
         div.style.setProperty("--y", arr2[1]);
@@ -49,41 +99,43 @@ function createrandom(){
         boardfr[arr2[0]][arr2[1]] = 2;
     }
 
-    
+
 }
 
-function deleteduplicates(tilechange){
+function deleteduplicates(tilechange) {
     // tilechange=onleftchange();
-    let duplicate=[];
+    let duplicate = [];
     for (let i = 0; i < tilechange.length; i++) {
-        const key = tilechange[i].slice(2,4);
-        for (let j = i+1; j < tilechange.length; j++) {
-            if (key==tilechange[j].slice(2,4)) {
+        const key = tilechange[i].slice(2, 4);
+        for (let j = i + 1; j < tilechange.length; j++) {
+            if (key == tilechange[j].slice(2, 4)) {
                 duplicate.push(tilechange[i])
                 break;
             }
         }
     }
     for (let i = 0; i < duplicate.length; i++) {
-        let key=duplicate[i].slice(2,4)
-        let tiles=document.querySelectorAll(`.tile`);
-        let content=0;
-        let count=1;
+        let key = duplicate[i].slice(2, 4)
+        let tiles = document.querySelectorAll(`.tile`);
+        let content = 0;
+        let count = 1;
         tiles.forEach(tile => {
             if (tile.classList.contains(key)) {
-                    content=tile.innerHTML;
+                if (count != 1) {
+                    content = tile.innerHTML;
                     tile.remove();
-                
-              
+                }
+                count++;
+
             }
         });
-        let div = document.createElement("div");
-        gridfr.appendChild(div);
-        div.classList.add('tile')
-        div.classList.add(key)
-        div.style.setProperty("--x", parseInt(key[0]));
-        div.style.setProperty("--y", parseInt(key[1]));
-        div.innerHTML = content;
+        // let div = document.createElement("div");
+        // gridfr.appendChild(div);
+        // div.classList.add('tile')
+        // div.classList.add(key)
+        // div.style.setProperty("--x", parseInt(key[0]));
+        // div.style.setProperty("--y", parseInt(key[1]));
+        // div.innerHTML = content;
     }
 }
 
@@ -92,7 +144,7 @@ function deleteduplicates(tilechange){
 //     tile.remove();
 // }
 // count++;
-function tilemovement(changes){
+function tilemovement(changes) {
     tiles = document.querySelectorAll('.tile');
     for (let i = 0; i < changes.length; i++) {
         let ind = changes[i].slice(0, 2);
@@ -106,96 +158,133 @@ function tilemovement(changes){
                 tile.style.setProperty("--y", parseInt(nextindex[1]));
                 if (changes[i].slice(-1) == 1) {
                     content = parseInt(content) * 2;
-                    tile.innerHTML=content;
+                    tile.innerHTML = content;
                 }
                 else {
                     content = parseInt(content);
-                    tile.innerHTML=content;
+                    tile.innerHTML = content;
                 }
             }
 
         });
-        
+
     }
-    
+
     // setTimeout(() => deleteduplicates(changes), 1);
 
 }
+function areArraysEqual(arr1, arr2) {
+    // Flatten the arrays
+    const flatArr1 = arr1.flat();
+    const flatArr2 = arr2.flat();
 
-function changebackgroundcolor(){
-    let tiles=document.querySelectorAll('.tile');
+    // Check if the lengths are equal
+    if (flatArr1.length !== flatArr2.length) {
+        return false;
+    }
+
+    // Check if all elements are equal
+    for (let i = 0; i < flatArr1.length; i++) {
+        if (flatArr1[i] !== flatArr2[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function changebackgroundcolor() {
+    let tiles = document.querySelectorAll('.tile');
     tiles.forEach(tile => {
-        let content=tile.innerHTML;
-        let power=Math.log2(content);
-        let BL=100-power *9;
-        tile.style.setProperty('--background-lightness',`${BL}%`);
-        tile.style.setProperty('--text-lightness',`${BL<=50 ? 90 : 10}%`)
+        let content = tile.innerHTML;
+        let power = Math.log2(content);
+        let BL = 100 - power * 9;
+        tile.style.setProperty('--background-lightness', `${BL}%`);
+        tile.style.setProperty('--text-lightness', `${BL <= 50 ? 90 : 10}%`)
     });
 }
 
 function events(e) {
+
     // let changes=[];
-    if (e.key == "ArrowLeft") {
-        let changes = onleftchange();
-        if (changes.length!=0) {
-            tilemovement(changes);
-            // deleteduplicates(changes);
-            boardfr=onleft(boardfr);
-            createrandom();
-            changebackgroundcolor();
-            // deleteduplicates(changes);
-        }
-
+    let lc = onleft(boardfr);
+    let rc = onright(boardfr);
+    let tc = ontop(boardfr);
+    let bc = onbottom(boardfr);
+    if (areArraysEqual(lc, boardfr) && areArraysEqual(rc, boardfr) && areArraysEqual(tc, boardfr) && areArraysEqual(bc, boardfr)) {
+        gameover();
+        return [];
     }
-    else if (e.key == "ArrowRight") {
-        let changes = onrightchange();
-        if (changes.length!=0) {
-            tilemovement(changes);
-            // deleteduplicates(changes);
-            boardfr=onright(boardfr);
-            createrandom();
-            changebackgroundcolor();
-        }
-    }
-
-    else if (e.key == "ArrowUp") {
-        let changes = ontopchange();
-        if (changes.length!=0) {
-            tilemovement(changes);
-            // deleteduplicates(changes);
-            boardfr=ontop(boardfr);
-            createrandom();
-            changebackgroundcolor();
+    else {
+        if (e.key == "ArrowLeft") {
+            let changes = onleftchange();
+            if (changes.length != 0) {
+                tilemovement(changes);
+                // deleteduplicates(changes);
+                boardfr = lc;
+                createrandom();
+                changebackgroundcolor();
+                return changes;
+                // deleteduplicates(changes);
+            }
 
         }
-    }
-    else if (e.key == "ArrowDown") {
-        let changes = onbottomchange();
-        if (changes.length!=0) {
-            tilemovement(changes);
-            // deleteduplicates(changes);
-            boardfr=onbottom(boardfr);
-            createrandom(); 
-            changebackgroundcolor();
+        else if (e.key == "ArrowRight") {
+            let changes = onrightchange();
+            if (changes.length != 0) {
+                tilemovement(changes);
+                // deleteduplicates(changes);
+                boardfr = rc;
+                createrandom();
+                changebackgroundcolor();
+                return changes;
+            }
         }
 
+        else if (e.key == "ArrowUp") {
+            let changes = ontopchange();
+            if (changes.length != 0) {
+                tilemovement(changes);
+                // deleteduplicates(changes);
+                boardfr = tc;
+                createrandom();
+                changebackgroundcolor();
+                return changes;
+
+            }
+        }
+        else if (e.key == "ArrowDown") {
+            let changes = onbottomchange();
+            if (changes.length != 0) {
+                tilemovement(changes);
+                // deleteduplicates(changes);
+                boardfr = bc;
+                createrandom();
+                changebackgroundcolor();
+                return changes;
+            }
+
+        }
+
+
     }
+
     // deleteduplicates(changes);
-    
+
 }
 
 function startboard(boa) {
     // let board = boa.map(row => row.slice());
     let array2 = [];
     let zeros = zerosindexs(boardfr);
-    console.log(zeros)
+    // console.log(zeros)
     let index1 = Math.floor(Math.random() * zeros.length);
     array2.push(zeros[index1]);
     zeros.splice(index1, 1);
     let index2 = Math.floor(Math.random() * zeros.length);
     array2.push(zeros[index2]);
     zeros.splice(index2, 1);
-    console.log(array2);
+    // console.log(array2);
     for (let i = 0; i < array2.length; i++) {
         let div = document.createElement("div");
         gridfr.appendChild(div);
@@ -207,6 +296,7 @@ function startboard(boa) {
         boardfr[array2[i][0]][array2[i][1]] = 2;
         // div.innerHTML=4;
     }
+    changebackgroundcolor();
 }
 
 function onleftchange() {
@@ -403,7 +493,7 @@ function onleft(boa) {
                 a[j] = 0;
                 i++;
             }
-            if (a[i] != 0) {    
+            if (a[i] != 0) {
                 i++;
             }
             j++;
@@ -453,7 +543,7 @@ function onright(boa) {
         let n = a.length - 2;
         while (n >= 0) {
             if (a[n + 1] === a[n]) {
-                a[n+1] = a[n] * 2;
+                a[n + 1] = a[n] * 2;
                 a[n] = 0;
             }
             n--;
@@ -568,3 +658,68 @@ function generaterandomstarts(arr) {
 
 //     }
 // }
+
+
+// Define variables to keep track of touch start and end positions
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+let touchThreshold = 10; // Adjust this threshold as needed
+
+// Get the container element
+let containerElement = document.querySelector('.container');
+
+// Add touch event listeners to the container element
+containerElement.addEventListener('touchstart', function (event) {
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+});
+
+containerElement.addEventListener('touchmove', function (event) {
+    // event.preventDefault(); // Prevent scrolling while swiping
+    touchEndX = event.touches[0].clientX;
+    touchEndY = event.touches[0].clientY;
+});
+
+containerElement.addEventListener('touchend', function (event) {
+    let deltaX = touchEndX - touchStartX;
+    let deltaY = touchEndY - touchStartY;
+
+    // Calculate the absolute distance traveled
+    let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    // Determine if the interaction is a swipe or a tap
+    if (distance > touchThreshold) {
+        // Swipe
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            // Horizontal swipe
+            if (deltaX > 0) {
+                // Swipe right
+                handleSwipe('ArrowRight');
+            } else {
+                // Swipe left
+                handleSwipe('ArrowLeft');
+            }
+        } else {
+            // Vertical swipe
+            if (deltaY > 0) {
+                // Swipe down
+                handleSwipe('ArrowDown');
+            } else {
+                // Swipe up
+                handleSwipe('ArrowUp');
+            }
+        }
+    } else {
+        // Tap (Do nothing or handle tap behavior)
+    }
+});
+
+// Function to handle swipe events
+function handleSwipe(direction) {
+    let event = new KeyboardEvent('keydown', { 'key': direction });
+    document.dispatchEvent(event);
+}
+
+
