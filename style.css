@@ -9,16 +9,16 @@ body{
     justify-content: center;
     align-items: center;
     height: 100vh;
-    font-size: 7.5vmin;
+    font-size: 5.5vmin;
 }
 
 .container{
-    --cellsize:20vmin;
+    --cellsize:15vmin;
     --cellgap:2vmin;
     --padding:2vmin;
     display: grid;
-    grid-template-columns: repeat(4,20vmin);
-    grid-template-rows: repeat(4,20vmin);
+    grid-template-columns: repeat(4,15vmin);
+    grid-template-rows: repeat(4,15vmin);
     border: solid red 2px;
     gap:2vmin;
     padding: 2vmin;
@@ -35,6 +35,8 @@ body{
     /* background-color: red; */
     --x:0;
     --y:2;
+    --background-lightness:70%;
+    --text-lightness:20%;
     border-radius: 1vmin;
     display: flex;
     justify-content: center;
@@ -46,4 +48,16 @@ body{
     top: calc(var(--x) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
     left: calc(var(--y) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
     transition: 100ms ease-in-out;
+    /* transition: background-color 200ms; */
+    animation: show ease-in-out 200ms;
+    background-color: hsl(100,50%, var(--background-lightness));
+    color: hsl(200, 25%, var(--text-lightness));
+}
+
+@keyframes show{
+    0%{
+        opacity: 0.5;
+        transform: scale(0);
+    }
+
 }

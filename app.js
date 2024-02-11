@@ -6,10 +6,10 @@
 // div2.classList.add("tile");
 // div1.style.setProperty("--y",0);
 let gridfr = document.querySelector(".container");
-let boardfr = [[4, 2, 8, 0],
-[4, 16, 0, 0],
-[0,0 , 0, 0],
-[0, 0, 0, 0]];
+let boardfr = [[2, 2, 2, 2],
+[2, 32, 0, 0],
+[2,4, 4, 0],
+[2, 1024, 2048, 2]];
 
 
 
@@ -29,9 +29,69 @@ for (let i = 0; i < boardfr.length; i++) {
     }
 
 }
+changebackgroundcolor();
 
 let event = document.addEventListener('keydown', events)
 
+function createrandom(){
+    let zeros = zerosindexs(boardfr);
+    // console.log(zeros)
+    if (zeros.length!=0) {
+        let index = Math.floor(Math.random() * zeros.length);
+        let arr2=zeros[index];
+        let div = document.createElement("div");
+        gridfr.appendChild(div);
+        div.classList.add('tile')   
+        div.classList.add(`${arr2[0]}${arr2[1]}`)
+        div.style.setProperty("--x", arr2[0]);
+        div.style.setProperty("--y", arr2[1]);
+        div.innerHTML = 2;
+        boardfr[arr2[0]][arr2[1]] = 2;
+    }
+
+    
+}
+
+function deleteduplicates(tilechange){
+    // tilechange=onleftchange();
+    let duplicate=[];
+    for (let i = 0; i < tilechange.length; i++) {
+        const key = tilechange[i].slice(2,4);
+        for (let j = i+1; j < tilechange.length; j++) {
+            if (key==tilechange[j].slice(2,4)) {
+                duplicate.push(tilechange[i])
+                break;
+            }
+        }
+    }
+    for (let i = 0; i < duplicate.length; i++) {
+        let key=duplicate[i].slice(2,4)
+        let tiles=document.querySelectorAll(`.tile`);
+        let content=0;
+        let count=1;
+        tiles.forEach(tile => {
+            if (tile.classList.contains(key)) {
+                    content=tile.innerHTML;
+                    tile.remove();
+                
+              
+            }
+        });
+        let div = document.createElement("div");
+        gridfr.appendChild(div);
+        div.classList.add('tile')
+        div.classList.add(key)
+        div.style.setProperty("--x", parseInt(key[0]));
+        div.style.setProperty("--y", parseInt(key[1]));
+        div.innerHTML = content;
+    }
+}
+
+// if (count!=1) {
+//     content=tile.innerHTML;
+//     tile.remove();
+// }
+// count++;
 function tilemovement(changes){
     tiles = document.querySelectorAll('.tile');
     for (let i = 0; i < changes.length; i++) {
@@ -55,31 +115,73 @@ function tilemovement(changes){
             }
 
         });
-
+        
     }
+    
+    // setTimeout(() => deleteduplicates(changes), 1);
+
+}
+
+function changebackgroundcolor(){
+    let tiles=document.querySelectorAll('.tile');
+    tiles.forEach(tile => {
+        let content=tile.innerHTML;
+        let power=Math.log2(content);
+        let BL=100-power *9;
+        tile.style.setProperty('--background-lightness',`${BL}%`);
+        tile.style.setProperty('--text-lightness',`${BL<=50 ? 90 : 10}%`)
+    });
 }
 
 function events(e) {
+    // let changes=[];
     if (e.key == "ArrowLeft") {
         let changes = onleftchange();
-        tilemovement(changes);
-        boardfr=onleft(boardfr);
+        if (changes.length!=0) {
+            tilemovement(changes);
+            // deleteduplicates(changes);
+            boardfr=onleft(boardfr);
+            createrandom();
+            changebackgroundcolor();
+            // deleteduplicates(changes);
+        }
+
     }
     else if (e.key == "ArrowRight") {
         let changes = onrightchange();
-        tilemovement(changes);
-        boardfr=onright(boardfr);
+        if (changes.length!=0) {
+            tilemovement(changes);
+            // deleteduplicates(changes);
+            boardfr=onright(boardfr);
+            createrandom();
+            changebackgroundcolor();
+        }
     }
+
     else if (e.key == "ArrowUp") {
         let changes = ontopchange();
-        tilemovement(changes);
-        boardfr=ontop(boardfr);
+        if (changes.length!=0) {
+            tilemovement(changes);
+            // deleteduplicates(changes);
+            boardfr=ontop(boardfr);
+            createrandom();
+            changebackgroundcolor();
+
+        }
     }
     else if (e.key == "ArrowDown") {
         let changes = onbottomchange();
-        tilemovement(changes);
-        boardfr=onbottom(boardfr);
+        if (changes.length!=0) {
+            tilemovement(changes);
+            // deleteduplicates(changes);
+            boardfr=onbottom(boardfr);
+            createrandom(); 
+            changebackgroundcolor();
+        }
+
     }
+    // deleteduplicates(changes);
+    
 }
 
 function startboard(boa) {
@@ -351,8 +453,8 @@ function onright(boa) {
         let n = a.length - 2;
         while (n >= 0) {
             if (a[n + 1] === a[n]) {
-                a[n] = a[n] * 2;
-                a[n + 1] = 0;
+                a[n+1] = a[n] * 2;
+                a[n] = 0;
             }
             n--;
         }
