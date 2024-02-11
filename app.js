@@ -729,7 +729,7 @@ let touchStartY = 0;
 let touchEndX = 0;
 let touchEndY = 0;
 let touchThreshold = 10; // Adjust this threshold as needed
-let tapDurationThreshold = 250; // in milliseconds
+let tapDurationThreshold = 350; // in milliseconds
 
 // Get the container element
 let containerElement = document.querySelector('.container');
