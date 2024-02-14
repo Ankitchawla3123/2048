@@ -210,6 +210,28 @@
         position: relative;
         background-color: #ccc;
     }
+    .scorecontair{
+        display: flex;
+        gap: 1 vmin;
+        flex-direction: column;
+        border: solid black;
+        padding: 2vmin;
+        font-size: 1em;
+        border-radius: 2vmin;
+        /* background-color: #5f8ae1; */
+        background-color: rgba(0, 0, 0, 0);
+        width: 32vmin ;
+        align-items: center;
+    }
+    .Restart1{
+        height: 12vmin;
+        width: 25vmin;
+        font-size: 0.9em;
+        border-radius: 2vmin;
+        background-color: #5f8ae1;
+        background-color: rgba(0, 0, 0, 0);
+        transition: 0.2s ease-in-out 0s;
+    }
     
 }
 
