@@ -66,6 +66,7 @@ function resetBoard() {
     });
     startboard(boardfr);
     score.innerHTML=0;
+    truekey=true
 }
 
 
@@ -90,8 +91,10 @@ document.addEventListener('keydown', function(event) {
     let rc = onright(boardfr);
     let tc = ontop(boardfr);
     let bc = onbottom(boardfr);
-    if (areArraysEqual(lc, boardfr) && areArraysEqual(rc, boardfr) && areArraysEqual(tc, boardfr) && areArraysEqual(bc, boardfr)) {
-        gameover();
+    if (areArraysEqual(lc, boardfr) && areArraysEqual(rc, boardfr) && areArraysEqual(tc, boardfr) && areArraysEqual(bc, boardfr) && truekey) {
+        truekey=false;
+        setTimeout(gameover,1500);
+        
     }
     //after the event listener;
     let sum = 0;
@@ -119,12 +122,14 @@ document.addEventListener('keydown', function(event) {
 
 let score2=document.querySelector('.score2')
 
+let truekey=true;
 function gameover() {
     let box = document.querySelector('.box');
     box.classList.add('active');
     let overlay = document.querySelector('.overlay');
     overlay.classList.add('overlay1')
     score2.innerHTML=score.innerHTML;
+    truekey=false;
 }
 
 function createrandom() {
@@ -255,11 +260,12 @@ function events(e) {
     let rc = onright(boardfr);
     let tc = ontop(boardfr);
     let bc = onbottom(boardfr);
-    if (areArraysEqual(lc, boardfr) && areArraysEqual(rc, boardfr) && areArraysEqual(tc, boardfr) && areArraysEqual(bc, boardfr)) {
-        gameover();
-        return [];
-    }
-    else {
+    // if (areArraysEqual(lc, boardfr) && areArraysEqual(rc, boardfr) && areArraysEqual(tc, boardfr) && areArraysEqual(bc, boardfr)) {
+    //     setTimeout(gameover,1500)
+    //     // gameover();
+    //     return [];
+    // }
+    
         if (e.key == "ArrowLeft") {
             let changes = onleftchange();
             if (changes.length != 0) {
@@ -311,7 +317,7 @@ function events(e) {
         }
 
 
-    }
+    
 
     // deleteduplicates(changes);
 
