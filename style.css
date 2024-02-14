@@ -209,6 +209,7 @@
         padding: 2vmin;
         position: relative;
         background-color: #ccc;
+        font-weight: bold;
     }
     .scorecontair{
         display: flex;
