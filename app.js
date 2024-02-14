@@ -5,6 +5,7 @@
 // div1.classList.add("tile");
 // div2.classList.add("tile");
 // div1.style.setProperty("--y",0);
+
 let gridfr = document.querySelector(".container");
 let boardfr = [[0, 0, 0, 0],
 [0, 0, 0, 0],
@@ -14,6 +15,15 @@ let boardfr = [[0, 0, 0, 0],
 window.onload = function () {
     startboard(boardfr);
 };
+
+
+
+let restartbtn=document.querySelector('.Restart1');
+restartbtn.addEventListener('click',resetBoard)
+
+
+
+
 
 // testing 
 // for (let i = 0; i < boardfr.length; i++) {
@@ -35,7 +45,7 @@ window.onload = function () {
 // document.
 
 let resetButton = document.querySelector('.Restart');
-resetButton.addEventListener('click', (e)=>{
+resetButton.addEventListener('click', (e) => {
     resetBoard();
     let box = document.querySelector('.box');
     box.classList.remove('active');
@@ -54,15 +64,27 @@ function resetBoard() {
     tiles.forEach(tile => {
         tile.remove();
     });
-    startboard(boardfr);   
+    startboard(boardfr);
+    score.innerHTML=0;
 }
 
 
 
 changebackgroundcolor();
+let score = document.querySelector(".score");
 
-let event = document.addEventListener('keydown', function (event) {
-    let deupli = events(event);
+let isProcessing = false; // Flag variable to indicate whether processing is ongoing
+
+document.addEventListener('keydown', function(event) {
+    // Check if processing is ongoing
+    if (isProcessing) {
+        return; // Ignore the current keydown event
+    }
+
+    isProcessing = true; // Set flag variable to indicate processing is ongoing
+
+    events(event);
+
     // deleteduplicates(); 
     let lc = onleft(boardfr);
     let rc = onright(boardfr);
@@ -71,16 +93,38 @@ let event = document.addEventListener('keydown', function (event) {
     if (areArraysEqual(lc, boardfr) && areArraysEqual(rc, boardfr) && areArraysEqual(tc, boardfr) && areArraysEqual(bc, boardfr)) {
         gameover();
     }
-    // deleteduplicates(deupli);
-})
+    //after the event listener;
+    let sum = 0;
+    for (let i = 0; i < boardfr.length; i++) {
+        for (let j = 0; j < boardfr.length; j++) {
+            if (boardfr[i][j]!=2) {
+                if (boardfr[i][j]==4) {
+                    sum += boardfr[i][j];   
+                }
+                else{
+                    sum += 2*boardfr[i][j];
+                }
+                
+            }
+            
+        }
+    }
+    
+    score.innerHTML = sum;
 
+    // deleteduplicates(deupli);
+
+    isProcessing = false; // Set flag variable to indicate processing is finished
+});
+
+let score2=document.querySelector('.score2')
 
 function gameover() {
     let box = document.querySelector('.box');
     box.classList.add('active');
     let overlay = document.querySelector('.overlay');
     overlay.classList.add('overlay1')
-
+    score2.innerHTML=score.innerHTML;
 }
 
 function createrandom() {
@@ -658,6 +702,9 @@ function generaterandomstarts(arr) {
 
 //     }
 // }
+
+
+
 
 
 // Define variables to keep track of touch start and end positions

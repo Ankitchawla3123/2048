@@ -5,21 +5,24 @@
     }
 
     body{
+        /* margin-top: vmin; */
+        gap: 2vmin;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
-        font-size: 6.5vmin;
+        font-size: 5.5vmin;
         background-color: rgb(237,237,237);
     }
 
     .container{
-        --cellsize:18vmin;
+        --cellsize:14vmin;
         --cellgap:2vmin;
         --padding:2vmin;
         display: grid;
-        grid-template-columns: repeat(4,18vmin);
-        grid-template-rows: repeat(4,18vmin);
+        grid-template-columns: repeat(4,14vmin);
+        grid-template-rows: repeat(4,14vmin);
         /* border: solid red 2px; */
         gap:2vmin;
         border: 1vmin;
@@ -46,7 +49,7 @@
         /* padding: em; */
         padding-top: 1em;
         /* justify-content: center; */
-        gap: 15vmin;
+        gap: 4vmin;
         position: fixed;
         top: 50%;
         left: 50%;
@@ -63,6 +66,12 @@
 
     .box.active{
         transform: translate(-50%,-50%) scale(1);
+    }
+    .scorefinal{
+        font-size: 4vmin;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .Restart{
@@ -104,7 +113,7 @@
         background-color: rgb(141, 100, 100);
         top: calc(var(--x) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
         left: calc(var(--y) * (var(--cellsize) + var(--cellgap)) + var(--cellgap));
-        transition: 100ms ease-in-out;
+        transition: 120ms ease-in-out;
         /* transition: background-color 200ms; */
         animation: show ease-in-out 200ms;
         background-color: hsl(1000,80%, var(--background-lightness));
@@ -123,4 +132,56 @@
         overscroll-behavior: none; /* Standard syntax */
         overscroll-behavior-y: none; /* For Firefox */
     }
+
+.scorecontair{
+    display: flex;
+    gap: 1 vmin;
+    flex-direction: column;
+    border: solid black;
+    padding: 2vmin;
+    font-size: 0.7em;
+    border-radius: 2vmin;
+    /* background-color: #5f8ae1; */
+    background-color: rgba(0, 0, 0, 0);
+    width: 20vmin ;
+    align-items: center;
+}
+.score{
+    align-self: center;
+}
+.Restart1{
+    height: 8vmin;
+    width: 25vmin;
+    font-size: 0.7em;
+    border-radius: 2vmin;
+    background-color: #5f8ae1;
+    background-color: rgba(0, 0, 0, 0);
+    transition: 0.2s ease-in-out 0s;
+}
+.Restart1:hover{
+    transform: scale(1.1);
+}
+
+@media (max-width:600px) {
+    body{
+        font-size: 7.5vmin;
+        gap: 6vmin;
+    }
+    .container{
+        /* font-size: 7.5vmin; */
+        --cellsize:18vmin;
+        --cellgap:2vmin;
+        --padding:2vmin;
+        display: grid;
+        grid-template-columns: repeat(4,18vmin);
+        grid-template-rows: repeat(4,18vmin);
+        /* border: solid red 2px; */
+        gap:2vmin;
+        border: 1vmin;
+        border-radius: 1vmin;
+        padding: 2vmin;
+        position: relative;
+        background-color: #ccc;
+    }
     
+}
